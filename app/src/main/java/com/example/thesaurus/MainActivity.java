@@ -12,16 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
     final int STARTING_CHILDREN = 2;
 
     Button btnSubmit;
     EditText wordInput;
     LinearLayout layout;
 
-
     private Context context;
-
 
     String[][] synonyms = new String[][] { {"swift",  "abrupt", "expeditious", "hasty", "nimble", "quick", "rapid", "speedy", "sudden", "unexpected"},
             {"objective", "detached", "disinterested", "dispassionate", "equitable", "evenhanded", "nonpartisan", "open-minded", "unbiased"},
@@ -38,22 +35,14 @@ public class MainActivity extends AppCompatActivity {
         wordInput = findViewById(R.id.word_input);
         layout = findViewById(R.id.layout);
 
-
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearSynonyms();
-
                 String input = wordInput.getText().toString();
-
-                String[] inputSynonyms = getSynonyms(input);
-
-                for(String synonym: inputSynonyms){
-                    layout.addView(makeText(synonym));
-                }
+                renderSynonyms(getSynonyms(input));
             }
         });
-
     }
 
     private String[] getSynonyms(String s) {
@@ -66,20 +55,13 @@ public class MainActivity extends AppCompatActivity {
         }
         String[] noneFound = new String[1];
         noneFound[0] = "No known synonyms";
-
         return noneFound;
     }
 
-    private TextView makeText(String synonym){
-
-        TextView view = new TextView(context);
-        view.setText(synonym);
-        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
-        view.setPadding(15,15,15,15);
-        view.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        view.setWidth(2000);
-
-        return view;
+    private void renderSynonyms(String[] group) {
+        for(String synonym: group) {
+            layout.addView(makeText(synonym));
+        }
     }
 
     private void clearSynonyms() {
@@ -88,5 +70,15 @@ public class MainActivity extends AppCompatActivity {
             View v = layout.getChildAt(i);
             layout.removeView(v);
         }
+    }
+
+    private TextView makeText(String synonym){
+        TextView view = new TextView(context);
+        view.setText(synonym);
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+        view.setPadding(15,15,15,15);
+        view.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        view.setWidth(2000);
+        return view;
     }
 }
